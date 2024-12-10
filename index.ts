@@ -82,6 +82,8 @@ mongoose.connect(process.env.MONGODB_URI)
 
     app.post('/api/message', async (req: Request, res: Response) => {
       res.setHeader('Access-Control-Allow-Origin', '*')
+      if (req.headers.api_token == process.env.API_TOKEN) {
+        console.log("we got a hit")
 
       try {
         const userMessage = await Message.create(req.body)
@@ -92,6 +94,9 @@ mongoose.connect(process.env.MONGODB_URI)
         console.log("Error", error)
         res.status(500).json({ message: error })
       }
+    } else {
+      res.status(500).json({ message: "Something wrong with token" })
+    }
 
     })
     app.post('/api/reservation', async (req: Request, res: Response) => {

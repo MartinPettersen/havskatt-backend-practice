@@ -84,15 +84,21 @@ mongoose.connect(process.env.MONGODB_URI)
     }));
     app.post('/api/message', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.setHeader('Access-Control-Allow-Origin', '*');
-        try {
-            const userMessage = yield Message.create(req.body);
-            const message = new Message(userMessage);
-            message.save();
-            res.status(200).json(userMessage);
+        if (req.headers.api_token == process.env.API_TOKEN) {
+            console.log("we got a hit");
+            try {
+                const userMessage = yield Message.create(req.body);
+                const message = new Message(userMessage);
+                message.save();
+                res.status(200).json(userMessage);
+            }
+            catch (error) {
+                console.log("Error", error);
+                res.status(500).json({ message: error });
+            }
         }
-        catch (error) {
-            console.log("Error", error);
-            res.status(500).json({ message: error });
+        else {
+            res.status(500).json({ message: "Something wrong with token" });
         }
     }));
     app.post('/api/reservation', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
