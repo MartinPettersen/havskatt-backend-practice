@@ -2,9 +2,9 @@ import { Request, Response } from 'express';
 import dotenv from 'dotenv';
 const mongoose = require('mongoose');
 const express = require('express')
-const Message = require('./models/message.model.ts')
-const Menu = require('./models/menu.model.ts')
-const Reservation = require('./models/reservation.model.ts')
+const Message = require('./models/message.model')
+const Menu = require('./models/menu.model')
+const Reservation = require('./models/reservation.model')
 
 dotenv.config();
 const app = express()
