@@ -18,17 +18,22 @@ const express = require('express');
 const Message = require('./models/message.model');
 const Menu = require('./models/menu.model');
 const Reservation = require('./models/reservation.model');
+const cors = require('cors');
 dotenv_1.default.config();
 const app = express();
 app.use(express.json());
+app.use(cors());
+app.options('*', cors());
 const PORT = process.env.PORT || 3000;
 mongoose.connect(process.env.MONGODB_URI)
     .then(() => {
     console.log('Connected!');
     app.get('/', function (req, res) {
+        res.setHeader('Access-Control-Allow-Origin', '*');
         res.send('Hello, you will need a token to access the data from this api');
     });
     app.get('/api/menues', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        res.setHeader('Access-Control-Allow-Origin', '*');
         if (req.headers.api_token == process.env.API_TOKEN) {
             try {
                 const result = yield Menu.find();
@@ -44,6 +49,7 @@ mongoose.connect(process.env.MONGODB_URI)
         }
     }));
     app.get('/api/messages', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        res.setHeader('Access-Control-Allow-Origin', '*');
         if (req.headers.api_token == process.env.API_TOKEN) {
             try {
                 const result = yield Message.find();
@@ -59,6 +65,7 @@ mongoose.connect(process.env.MONGODB_URI)
         }
     }));
     app.get('/api/reservations', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        res.setHeader('Access-Control-Allow-Origin', '*');
         const { date } = req.query;
         if (req.headers.api_token == process.env.API_TOKEN) {
             console.log("we got a hit");
@@ -76,6 +83,7 @@ mongoose.connect(process.env.MONGODB_URI)
         }
     }));
     app.post('/api/message', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        res.setHeader('Access-Control-Allow-Origin', '*');
         try {
             const userMessage = yield Message.create(req.body);
             const message = new Message(userMessage);
@@ -88,6 +96,7 @@ mongoose.connect(process.env.MONGODB_URI)
         }
     }));
     app.post('/api/reservation', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        res.setHeader('Access-Control-Allow-Origin', '*');
         try {
             const userReservation = yield Reservation.create(req.body);
             const reservation = new Reservation(userReservation);

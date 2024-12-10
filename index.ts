@@ -5,10 +5,13 @@ const express = require('express')
 const Message = require('./models/message.model')
 const Menu = require('./models/menu.model')
 const Reservation = require('./models/reservation.model')
+const cors = require('cors');
 
 dotenv.config();
 const app = express()
 app.use(express.json())
+app.use(cors())
+app.options('*', cors());
 
 const PORT = process.env.PORT || 3000;
 
@@ -18,14 +21,19 @@ mongoose.connect(process.env.MONGODB_URI)
     console.log('Connected!')
 
     app.get('/', function (req: Request, res: Response) {
+      res.setHeader('Access-Control-Allow-Origin', '*')
+
       res.send('Hello, you will need a token to access the data from this api')
     })
 
     app.get('/api/menues', async (req: Request, res: Response) => {
+      res.setHeader('Access-Control-Allow-Origin', '*')
+
       if (req.headers.api_token == process.env.API_TOKEN) {
 
         try {
           const result = await Menu.find()
+          
           res.send(result)
         } catch (error) {
           console.log("Error", error)
@@ -37,6 +45,7 @@ mongoose.connect(process.env.MONGODB_URI)
     })
 
     app.get('/api/messages', async (req: Request, res: Response) => {
+      res.setHeader('Access-Control-Allow-Origin', '*')
 
       if (req.headers.api_token == process.env.API_TOKEN) {
 
@@ -53,6 +62,8 @@ mongoose.connect(process.env.MONGODB_URI)
     })
 
     app.get('/api/reservations', async (req: Request, res: Response) => {
+      res.setHeader('Access-Control-Allow-Origin', '*')
+
       const { date } = req.query;
 
       if (req.headers.api_token == process.env.API_TOKEN) {
@@ -70,6 +81,7 @@ mongoose.connect(process.env.MONGODB_URI)
     })
 
     app.post('/api/message', async (req: Request, res: Response) => {
+      res.setHeader('Access-Control-Allow-Origin', '*')
 
       try {
         const userMessage = await Message.create(req.body)
@@ -83,6 +95,8 @@ mongoose.connect(process.env.MONGODB_URI)
 
     })
     app.post('/api/reservation', async (req: Request, res: Response) => {
+      res.setHeader('Access-Control-Allow-Origin', '*')
+
       try {
         const userReservation = await Reservation.create(req.body)
         const reservation = new Reservation(userReservation)
