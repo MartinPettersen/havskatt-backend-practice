@@ -25,7 +25,7 @@ mongoose.connect(process.env.MONGODB_URI)
       try {
         const result = await Menu.find()
         res.send(result)
-      } catch(error) {
+      } catch (error) {
         console.log("Error", error)
         res.status(500).json({ message: error })
       }
@@ -35,24 +35,28 @@ mongoose.connect(process.env.MONGODB_URI)
       try {
         const result = await Message.find()
         res.send(result)
-      } catch(error) {
+      } catch (error) {
         console.log("Error", error)
         res.status(500).json({ message: error })
       }
     })
 
     app.get('/api/reservations', async (req: Request, res: Response) => {
+      const { date } = req.query;
 
-      const { date } = req.query;  
+      console.log("Requested Date:", date);
 
-      console.log("Requested Date:", date); 
-
-      try {
-        const result = await Reservation.find({ date: date })
-        res.send(result)
-      } catch(error) {
-        console.log("Error", error)
-        res.status(500).json({ message: error })
+      if (req.headers.api_token == process.env.API_TOKEN) {
+        console.log("we got a hit")
+        try {
+          const result = await Reservation.find({ date: date })
+          res.send(result)
+        } catch (error) {
+          console.log("Error", error)
+          res.status(500).json({ message: error })
+        }
+      } else {
+        res.status(500).json({ message: "Something wrong with token" })
       }
     })
 

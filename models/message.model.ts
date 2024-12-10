@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-const MessageSchema = mongoose.Schema(
+const MessageSchema = new mongoose.Schema(
     {
         "name": String,
         "email": String,
@@ -8,7 +8,7 @@ const MessageSchema = mongoose.Schema(
         "message": String
       },
       {
-        Timestamps: true
+        timestamps: true
       }
 )
 

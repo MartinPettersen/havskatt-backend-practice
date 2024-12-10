@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "node index.ts",
+    "build": "tsc",
+    "startup": "node dist/index.ts",
+    "server": "npm run build && npm run startup",
     "dev": "nodemon index.ts"
   },
   "keywords": [],
@@ -14,6 +16,7 @@
   "dependencies": {
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
+    "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.11.0",
     "mongoose": "^8.8.3"
   },

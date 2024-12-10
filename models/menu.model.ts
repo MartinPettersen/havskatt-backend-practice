@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-const MenuSchema = mongoose.Schema(
+const MenuSchema = new mongoose.Schema(
     {
         "name": String,
         "retter": [
@@ -14,7 +14,7 @@ const MenuSchema = mongoose.Schema(
         ]
       },
       {
-        Timestamps: true
+        timestamps: true
       }
 )
 

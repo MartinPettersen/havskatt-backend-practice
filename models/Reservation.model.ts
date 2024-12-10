@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-const ReservationSchema = mongoose.Schema(
+const ReservationSchema = new mongoose.Schema(
   {
     "reservationId": String,
     "name": String,
@@ -12,7 +12,7 @@ const ReservationSchema = mongoose.Schema(
     "phone": Number
   },
   {
-    Timestamps: true
+    timestamps: true
   }
 )
 
