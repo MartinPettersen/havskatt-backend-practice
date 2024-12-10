@@ -26,31 +26,40 @@ mongoose.connect(process.env.MONGODB_URI)
     .then(() => {
     console.log('Connected!');
     app.get('/', function (req, res) {
-        res.send('Hello World');
+        res.send('Hello, you will need a token to access the data from this api');
     });
     app.get('/api/menues', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        try {
-            const result = yield Menu.find();
-            res.send(result);
+        if (req.headers.api_token == process.env.API_TOKEN) {
+            try {
+                const result = yield Menu.find();
+                res.send(result);
+            }
+            catch (error) {
+                console.log("Error", error);
+                res.status(500).json({ message: error });
+            }
         }
-        catch (error) {
-            console.log("Error", error);
-            res.status(500).json({ message: error });
+        else {
+            res.status(500).json({ message: "Something wrong with token" });
         }
     }));
     app.get('/api/messages', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        try {
-            const result = yield Message.find();
-            res.send(result);
+        if (req.headers.api_token == process.env.API_TOKEN) {
+            try {
+                const result = yield Message.find();
+                res.send(result);
+            }
+            catch (error) {
+                console.log("Error", error);
+                res.status(500).json({ message: error });
+            }
         }
-        catch (error) {
-            console.log("Error", error);
-            res.status(500).json({ message: error });
+        else {
+            res.status(500).json({ message: "Something wrong with token" });
         }
     }));
     app.get('/api/reservations', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const { date } = req.query;
-        console.log("Requested Date:", date);
         if (req.headers.api_token == process.env.API_TOKEN) {
             console.log("we got a hit");
             try {
